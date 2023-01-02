@@ -17,7 +17,7 @@
     <nav class="navbar bg-light">
         <div class="container-fluid">
             <a class="navbar-brand">Products</a>
-            <form class="d-flex" role="search" action="{{route('product.search')}}">
+            <form class="d-flex" role="search" action="{{route('products.search')}}">
                 <input class="form-control me-2" name="search" type="search" placeholder="Search Products"
                     aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -30,6 +30,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
+                    @if(session('product_created'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('product_created') }}
+                        </div>
+                    @endif
+
                     <div class="card-header">
                         All Products <a href="/add-product" class="btn btn-primary" style="float:right">Add New
                             Product</a>
@@ -54,15 +60,15 @@
                             <tbody>
                                 @foreach($products as $product)
                                 <tr>
-                                    <td>{{$product->id}}</td>
+                                    <td>{{$loop->iteration}}</td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->description}}</td>
                                     <td>{{$product->category}}</td>
                                     <td>{{$product->price}}</td>
                                     <td>
-                                        <a href="/products/{{$product->id}}" class="btn btn-info">Details</a>
-                                        <a href="/edit-product/{{$product->id}}" class="btn btn-success">Edit</a>
-                                        <a href="/delete-product/{{$product->id}}" class="btn btn-danger">Delete</a>
+                                        <a href="{{ route('products.show', ['id' => $product->id]) }}" class="btn btn-info">Details</a>
+                                        <a href="{{ route('products.edit', ['id' => $product->id]) }}" class="btn btn-success">Edit</a>
+                                        <a href="{{ route('products.destroy', ['id' => $product->id]) }}" class="btn btn-danger">Delete</a>
                                     </td>
                                 </tr>
                                 @endforeach

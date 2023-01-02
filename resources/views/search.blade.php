@@ -17,7 +17,7 @@
     <nav class="navbar bg-light">
         <div class="container-fluid">
             <a class="navbar-brand">Products</a>
-            <form class="d-flex" role="search" action="{{route('product.search')}}">
+            <form class="d-flex" role="search" action="{{route('products.search')}}">
                 <input class="form-control me-2" name="search" type="search" placeholder="Search Products"
                     aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

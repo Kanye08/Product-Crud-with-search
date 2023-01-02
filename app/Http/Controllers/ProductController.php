@@ -3,48 +3,42 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products;
-use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function addProduct()
+    public function index()
+    {
+        $products = Product::latest()->get();
+        return view('products', compact('products'));
+    }
+
+    public function create()
     {
         return view('create');
     }
-    public function createProduct(Request $request)
+
+    public function store(Request $request)
     {
-        $product = new Products();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->category = $request->category;
-        $product->price = $request->price;
-        $product->save();
-        return back()->with('Product_created', 'Product has been added successfully!');
+        Product::create($request->all());
+        return redirect()->route('products.index')->with('product_created', 'Product has been added successfully!');
     }
-    public function getProduct()
+
+    public function show($id)
     {
-        $products = Products::orderBy('price', 'Desc')->get();
-        return view('products', compact('products'));
-    }
-    public function getProductById($id)
-    {
-        $product = Products::where('id', $id)->first();
+        $product = Product::where('id', $id)->first();
         return view('single', compact('product'));
     }
-    public function editProduct($id)
+
+    public function edit($id)
     {
-        $product = Products::find($id);
+        $product = Product::find($id);
         return view('edit', compact('product'));
     }
-    public function deleteProduct($id)
+
+    public function update(Request $request)
     {
-        Products::where('id', $id)->delete();
-        return back()->with('Product_deleted', 'Product deleted successfully!');
-    }
-    public function updateProduct(Request $request)
-    {
-        $product = Products::find($request->id);
+        $product = Product::find($request->id);
         $product->name = $request->name;
         $product->description = $request->description;
         $product->category = $request->category;
@@ -53,12 +47,19 @@ class ProductController extends Controller
 
         return back()->with('Product_updated', 'Product Updated successfully!');
     }
-    public function search()
+
+    public function search(Request $request)
     {
-        $query = $_GET['search'];
-        $products = Products::where('name', 'LIKE', '%' . $query . '%')->get();
+        $query = $request->search;
+        $products = Product::where('name', 'LIKE', '%' . $query . '%')->get();
 
         return view('search', compact('products'));
+    }
+
+    public function destroy($id)
+    {
+        Product::where('id', $id)->delete();
+        return back()->with('Product_deleted', 'Product deleted successfully!');
     }
 }
 

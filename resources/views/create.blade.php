@@ -17,7 +17,7 @@
     <nav class="navbar bg-light">
         <div class="container-fluid">
             <a class="navbar-brand">Products</a>
-            <form class="d-flex" role="search" action="{{route('product.search')}}">
+            <form class="d-flex" role="search" action="{{route('products.search')}}">
                 <input class="form-control me-2" type="search" name="search" placeholder="Search Products"
                     aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
@@ -35,11 +35,6 @@
                             Add Product
                         </div>
                         <div class="card-body">
-                            @if(Session::has('Product_created'))
-                            <div class="alert alert-success" role="alert">
-                                {{Session::get('Product_created')}}
-                            </div>
-                            @endif
                             <form action="{{route('product.create')}}" method="post">
                                 @csrf
                                 <div class="form-group">
